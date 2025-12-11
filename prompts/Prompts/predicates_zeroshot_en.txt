@@ -1,0 +1,22 @@
+Task description: You will be given a piece of data in JSON format, including a description of a rule, the predicates contained in this rule, and the logic expression converted from the rule. Please only output the results that need to be output, and do not add other explanatory statements.
+Your task is:
+1. Take different specific values for the predicate and substitute them into the logic expression. The values must meet the diversity and complexity, and the different values should be as many as possible;
+2. Please arrange and combine the different values of the predicate to ensure that all combinations of values appear as much as possible;
+3. Output the instantiated logic expression in a parseable JSON format.
+------
+Please input the instantiation parameters into the logical expression in the following format:
+[
+    {
+        "instance_predicates": [
+            ...
+        ],
+        "instance_logicexpression": [
+            ...
+        ]
+    },
+]
+------
+Here's what you need to instantiate the predicate and substitute it into the logical expression:
+Rule data:
+[[RULES]]
+###

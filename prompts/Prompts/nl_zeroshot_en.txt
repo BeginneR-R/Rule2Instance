@@ -1,0 +1,14 @@
+Task Description: You will be given a list, each element of which is a JSON-formatted data item, containing: 1. a description of a predicate and its specific value (instance_predicates); 2. an expression (instance_logicexpression) obtained by substituting these specific values into a logical expression.
+Your task is to convert the instantiated logical expression into natural language. Please only output the required output; do not add any other explanatory statements.
+------
+Please translate the output natural language in the following format:
+[
+    SENTENCE1,
+    SENTENCE2,
+    ...
+]
+------
+Here's what you need to translate logical expressions into natural language:
+Predicates and logical expressions:
+[[CONTEXT]]
+###

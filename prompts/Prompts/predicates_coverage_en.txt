@@ -1,0 +1,139 @@
+Task description: You will be given a piece of data in JSON format, including a description of a rule, the predicates contained in this rule, and the logic expression converted from the rule. Please only output the results that need to be output, and do not add other explanatory statements.
+Your task is:
+1. Take different specific values for the predicate and substitute them into the logical expression;
+2. Output the instantiated logical expression into a parsable JSON format.
+------
+Here is an example:
+```json
+{
+    "rule": "Responsibilities of the Work Safety Coordination Department: According to the instructions and relevant regulations of the leaders of the State Administration of Work Safety, organize and coordinate safety inspectors to rush to the accident site to participate in accident emergency rescue and accident investigation and handling work.",
+    "predicates":
+        [
+            "Instruction: Instruction(Leader, Regulation) ::: Indicates the instructions and relevant regulations issued by the leader.",
+            "Participate: Participate(Inspector, Scene, Task) ::: Indicates that the safety inspector participates in a task at the accident site.",
+            "GoTo(Inspector, Scene) ::: Indicates that the safety inspector rushes to the accident site.",
+            "Accident: Accident(Scene) ::: Indicates an accident that occurs in a certain scene.",
+        ],
+    "logicexpression":
+        [
+            "∀s ∀i ∀r (Accident(s) ∧ Instruction(Leader, r) → (GoTo(i, s) ∧ Participate(i, s, EmergencyRescue) ∧ Participate(i, s, Investigation)))" 
+        ]
+}
+```
+###
+The parameter values ​​of the instantiation of the predicate in this example and the output of substituting the instantiation parameters into the logical expression are as follows:
+[
+    {
+        "instance_predicates": [
+            "s=Chemical Plant — indicates that the accident scene is in the chemical plant",
+            "i=Zhang San — indicates that the safety inspector is Zhang San",
+            "r=Chemical Accident Emergency Response Regulations — indicates the instructions and relevant regulations issued by the leader"
+        ],
+        "instance_logicexpression": [
+            "∀s∀i∀r (Accident(Chemical Plant)∧Instruction(Leader, Chemical Accident Emergency Response Regulations)→(GoTo(Zhang San, Chemical Plant)∧Participate(Zhang San, Chemical Plant, Emergency Rescue)∧Participate(Zhang San, Chemical Plant, Investigation)))"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "s=Mine — indicates that the accident scene is in the mine",
+            "i=Li Si — Indicates that the safety inspector is Li Si",
+            "r=Mine Safety Production Regulations — Indicates the instructions and relevant regulations issued by the leader"
+    ],
+        "instance_logicexpression": [
+        "∀s∀i∀r (Accident(Mine)∧Instruction(Leader, Mine Safety Production Regulations)→(GoTo(Li Si, Mine)∧Participate(Li Si, Mine, Emergency Rescue)∧Participate(Li Si, Mine, Investigation)))"
+    ]
+    },
+    {
+        "instance_predicates": [
+            "s=Port — Indicates that the accident scene is in the port",
+            "i=Wang Wu — Indicates that the safety inspector is Wang Wu",
+            "r=Port Operation Safety Management Regulations — Indicates the instructions and relevant regulations issued by the leader"
+    ],
+        "instance_logicexpression": [
+        "∀s∀i∀r (Accident (Port) ∧Instruction (Leader, Port Operation Safety Management Regulations) → (GoTo (Wang Wu, Port) ∧Participate (Wang Wu, Port, Emergency Rescue) ∧Participate (Wang Wu, Port, Investigation)))"
+    ]
+    },
+    {
+    "instance_predicates": [
+    "s = Construction site - indicates that the accident scene is at the construction site",
+    "i = Zhao Liu - indicates that the safety inspector is Zhao Liu",
+    "r = Construction Safety Regulations - indicates the instructions and relevant regulations issued by the leader"
+    ],
+    "instance_logicexpression": [
+    "∀s∀i∀r (Accident(Construction site)∧Instruction(Leader, Construction safety regulations)→(GoTo(Zhao Liu, Construction site)∧Participate(Zhao Liu, Construction site, Emergency rescue)∧Participate(Zhao Liu, Construction site, Investigation)))"
+    ]
+    },
+]
+------
+Here is an example:
+```json
+{
+    "rule": "Disposal of rescued persons in post-disaster treatment: The local government civil affairs department or the unit where the rescued persons are located is responsible for the resettlement of the rescued persons; Hong Kong, Macao, Taiwan or foreign nationals, the local government Hong Kong, Macao and Taiwan Affairs Office or Foreign Affairs Office is responsible for the resettlement; foreign nationals are repatriated by the public security department or diplomatic department.",
+    "predicates":
+        [
+            "Responsible for resettlement: ResponsibleForSettlement(Department, Person) indicates that a certain department is responsible for the resettlement of a rescued person.",
+            "Hong Kong, Macao, Taiwan or foreign nationals: PersonType(Person, Type) indicates that a certain person is a Hong Kong, Macao, Taiwan or foreign national.",
+            "Repatriation: Deport(Person, Department) indicates that a certain department is responsible for the repatriation of a foreign national."
+        ],
+    "logicexpression":
+        [
+            "∀p (rescued persons(p) → (¬Hong Kong, Macao, Taiwan or foreign nationals(p) → ResponsibleForSettlement(civil affairs department, p) ∨ ResponsibleForSettlement(unit, p)))",
+            "∀p (Hong Kong, Macao, Taiwan or foreign personnel (p, Hong Kong, Macao, Taiwan) → ResponsibleForSettlement (Hong Kong, Macao, Taiwan Affairs Office, p) ∨ ResponsibleForSettlement (Foreign Affairs Office, p))",
+            "∀p (Hong Kong, Macao, Taiwan or foreign personnel (p, Foreign) → Deport (p, Public Security Department) ∨ Deport (p, Diplomatic Department))"
+        ]
+}
+```
+###
+The parameter values ​​of the instantiation of the predicate in this example and the output of substituting the instantiation parameters into the logical expression are as follows:
+[
+    {
+        "instance_predicates": [
+            "p=Zhang San — Zhang San is a local rescued person",
+            "Department: Civil Affairs Department"
+        ],
+        "instance_logicexpression": [
+            "Rescued Person (Zhang San) → (¬Hong Kong, Macao, Taiwan or Foreign Personnel (Zhang San) → ResponsibleForSettlement (Civil Affairs Department, Zhang San))"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "p=Li Si — Li Si is a Hong Kong, Macao, Taiwan person",
+            "Department: Hong Kong, Macao, Taiwan Affairs Office"
+        ],
+        "instance_logicexpression": [
+            "Hong Kong, Macao, Taiwan or Foreign Personnel (Li Si, Hong Kong, Macao, Taiwan) → ResponsibleForSettlement (Hong Kong, Macao, Taiwan Affairs Office, Li Si)"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "p=John Smith — John Smith is a foreign rescued person",
+            "Department: Diplomatic Department"
+        ],
+        "instance_logicexpression": [
+            "Hong Kong, Macao, Taiwan or foreign nationals (John Smith, Foreign) → Deport (John Smith, Diplomatic Department)"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "p=Xiao Wang — Xiao Wang is a local rescued person, his work unit is responsible for resettlement",
+            "Department: Work Unit"
+        ],
+        "instance_logicexpression": [
+            "Rescued Person (Xiao Wang) → (¬Hong Kong, Macao, Taiwan or foreign nationals (Xiao Wang) → ResponsibleForSettlement (Work Unit, Xiao Wang))"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "p=Maria — Maria is a foreign rescued person",
+            "Department: Public Security Department"
+        ],
+        "instance_logicexpression": [
+            "Hong Kong, Macao, Taiwan or foreign nationals (Maria, Foreign) → Deport (Maria, Public Security Department)"
+        ]
+    },
+]
+------
+Here is what you need to instantiate the predicate and substitute it into the logical expression:
+Rule data:
+[[RULES]]
+###

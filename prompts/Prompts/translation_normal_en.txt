@@ -1,0 +1,50 @@
+Task description: You will be given a description of a rule. Your task is to parse the rule into a first-order logic formula and output it in a parsable JSON format. Please only output the results that need to be output, and do not add other explanatory statements.
+The syntax of the first-order logic formula is defined as follows:
+1) Identify all predicates involved in the rule.
+2) Define the meaning and parameters of each predicate.
+3) According to the logical structure of the rule, use the first-order logic connectives (such as ∧, ∨, ⊕, ¬, →, ↔, etc.) and quantifiers (such as ∀, ∃, etc.) to construct a logical expression.
+------
+Here is an example:
+Rules:
+Responsibilities of the Work Safety Coordination Department: Organize and coordinate safety inspectors to rush to the accident site to participate in emergency rescue and accident investigation and handling work in accordance with the instructions of the leaders of the State Administration of Work Safety and relevant regulations.
+###
+Output：
+{
+    "predicates":
+    [
+        "Instruction(Leader, Regulation) ::: Indicates the instructions and relevant regulations issued by the leaders.",
+        "Participate(Inspector, Scene, Task) ::: Indicates that the safety inspector is involved in a task at the accident site.",
+        "GoTo(Inspector, Scene) ::: Indicates that the safety inspector general rushed to the scene of the accident.",
+        "Accident(Scene) ::: Indicates an accident that occurred in a certain scene."
+    ],
+    "logicexpression":
+    [
+        "∀s ∀i ∀r (Accident(s) ∧ Instruction(Leader, r) → (GoTo(i, s) ∧ Participate(i, s, EmergencyRescue) ∧ Participate(i, s, Investigation)))"
+    ]
+}
+------
+Here is an example:
+Rules:
+A level-by-level reporting system is implemented for information on sudden sandstorm disasters: After a sandstorm disaster occurs, the relevant departments of the local people's governments at or above the county level must promptly report the sandstorm disasters involving their departments and the losses caused by them to the sandstorm disaster emergency daily management office at the same level. The daily management office will summarize the information and report to the emergency leading group at the same level and the superior daily management office.
+###
+Output：
+{
+    "predicates":
+    [
+        "DustStorm(Area) ::: Indicates that a sandstorm disaster occurred in a certain area.",
+        "Loss(Department, Area) ::: Indicates the losses caused to a certain department in a certain area due to sandstorm disaster.",
+        "Report(From, To, Content) ::: Indicates that something is reported from one department to another.",
+        "DailyManagementOffice(Area) ::: Represents the daily management office of sandstorm disaster emergency in a certain area.",
+        "EmergencyResponseTeam(Area) ::: Represents the sandstorm disaster emergency leadership team in a certain area."
+    ],
+    "logicexpression":
+    [
+        "∀d ∀a (DustStorm(a) → (∃l (DailyManagementOffice(l, a) ∧ ∀c (Loss(c, a) → Report(c, l, Loss(c, a))))))",
+        "∀l ∀a (DailyManagementOffice(l, a) → (Report(l, EmergencyResponseTeam(a), Loss(l, a)) ∧ Report(l, DailyManagementOffice(ParentArea(a)), Loss(l, a))))"
+    ]
+}
+------
+Here's what you need to translate:
+Rules:
+[[RULES]]
+###

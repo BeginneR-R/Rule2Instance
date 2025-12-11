@@ -1,0 +1,74 @@
+Task description: You will be given a list, each element of which is a piece of data in JSON format, including: 
+1. The description of the predicate and the specific value of the predicate (instance_predicates); 
+2. The expression obtained by substituting these specific values ​​of the predicate into the logical expression (instance_logicexpression).
+Your task is to convert the instantiated logical expression into natural language. Please only output the results that need to be output, and do not add other explanatory statements. Note that single quotes are used within English strings. Note that you should translate into English.
+【Note】After generation, please check the output. Check the following: 1. Factual consistency: Does the natural language strictly follow logic? 2. Ambiguity: Is the question clear? 3. Style: Does it sound like the expression of a domain expert? Provide an evaluation for each data point.
+------
+Here is an example:
+```json
+[
+    {
+        "instance_predicates": [
+            "s=Chemical Plant — indicates that the accident scene is in the chemical plant",
+            "i=Zhang San — indicates that the safety inspector is Zhang San",
+            "r=Chemical Accident Emergency Response Regulations — indicates the instructions and relevant regulations issued by the leader"
+        ],
+        "instance_logicexpression": [
+            "∀s∀i∀r (Accident(Chemical Plant)∧Instruction(Leader, Chemical Accident Emergency Response Regulations)→(GoTo(Zhang San, Chemical Plant)∧Participate(Zhang San, Chemical Plant, Emergency Rescue)∧Participate(Zhang San, Chemical Plant, Investigation)))"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "s=Mine — indicates that the accident scene is in the mine",
+            "i=Li Si — Indicates that the safety inspector is Li Si",
+            "r=Mine Safety Production Regulations — Indicates the instructions and relevant regulations issued by the leader"
+        ],
+        "instance_logicexpression": [
+            "∀s∀i∀r (Accident(Mine)∧Instruction(Leader, Mine Safety Production Regulations)→(GoTo(Li Si, Mine)∧Participate(Li Si, Mine, Emergency Rescue)∧Participate(Li Si, Mine, Investigation)))"
+        ]
+    },
+    {
+        "instance_predicates": [
+            "s=Port — Indicates that the accident scene is in the port",
+            "i=Wang Wu — Indicates that the safety inspector is Wang Wu",
+            "r=Port Operation Safety Management Regulations — Indicates the instructions and relevant regulations issued by the leader"
+        ],
+        "instance_logicexpression": [
+            "∀s∀i∀r (Accident (Port) ∧Instruction (Leader, Port Operation Safety Management Regulations) → (GoTo (Wang Wu, Port) ∧Participate (Wang Wu, Port, Emergency Rescue) ∧Participate (Wang Wu, Port, Investigation)))"
+        ]
+    }
+]
+```
+###
+The natural language output of the translation is as follows:
+[
+    {
+        "nl": "An accident occurred at the chemical plant. According to the 'Chemical Accident Emergency Response Regulation', the leader issued instructions. Safety Inspector Zhang San received the instructions and immediately rushed to the chemical plant to participate in the on-site emergency rescue and accident investigation.",
+        "refinement": {
+            "factual_consistency": "The generated text strictly follows the logical chain: Accident (Chemical Plant) -> Rule Trigger -> Instruction -> Personnel Action. The entity 'Zhang San' is correctly instantiated as a specific inspector.",
+            "ambiguity": "The narrative is clear. It explicitly states the sequence of events without pronoun confusion. The causal link between the instruction and the deployment is evident.",
+            "style": "The tone is professional and objective, matching the style of a formal incident report. Terminology like 'emergency rescue' is appropriate for the domain."
+        }
+    },
+    {
+        "nl": "An accident occurred at the mine. According to the 'Mine Safety Production Regulations', the leader issued instructions. After receiving the instructions, Safety Inspector Li Si went to the mine site to participate in emergency rescue and investigate the accident.",
+        "refinement": {
+            "factual_consistency": "The citation of 'Mine Safety Production Regulations' aligns correctly with the 'Mine' setting. Li Si's actions (going to the site, investigating) logically follow the supervisor's instruction.",
+            "ambiguity": "No ambiguity detected. The scope of Li Si's responsibility is clearly defined as on-site rescue and investigation.",
+            "style": "Concise and declarative. The sentence structure correctly mimics a standard safety log entry or regulatory record."
+        }
+    },
+    {
+        "nl": "A safety accident occurred at the port. According to the 'Port Operation Safety Management Regulations', the leader issued instructions to send inspectors. As a safety inspector, Wang Wu rushed to the port to participate in emergency rescue and assist in the accident investigation.",
+        "refinement": {
+            "factual_consistency": "The scenario is factually consistent. The specific regulation ('Port Operation Safety...') matches the accident type. Wang Wu's role is correctly identified and linked to the rescue operation.",
+            "ambiguity": "The transition from the general instruction ('send an inspector') to the specific realization ('Wang Wu... rushed') is smooth and unambiguous.",
+            "style": "Formal and precise. The phrase 'assist in the investigation' adds realistic nuance to the inspector's duties, enhancing the professional feel of the text."
+        }
+    }
+]
+------
+Here is what you need to translate logical expressions into natural language:
+Predicates and logical expressions:
+[[CONTEXT]]
+###

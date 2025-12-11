@@ -1,0 +1,22 @@
+Task description: You will be given a description of a rule. Your task is to parse the rule into a first-order logic formula and output it in a parsable JSON format. Please only output the results that need to be output, and do not add other explanatory statements.
+The syntax of the first-order logic formula is defined as follows:
+1) Identify all predicates involved in the rule.
+2) Define the meaning and parameters of each predicate.
+3) According to the logical structure of the rule, use the first-order logic connectives (such as ∧, ∨, ⊕, ¬, →, ↔, etc.) and quantifiers (such as ∀, ∃, etc.) to construct a logical expression.
+------
+Generate output in the following format:
+{
+    "predicates":
+    [
+        ...
+    ],
+    "logicexpression":
+    [
+        ....
+    ]
+}
+------
+Here's what you need to translate:
+Rules:
+[[RULES]]
+###

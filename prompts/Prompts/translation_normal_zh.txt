@@ -1,0 +1,49 @@
+任务描述：你将被给予一个规则的描述。你的任务是将规则解析为一阶逻辑公式，并输出为可解析的 JSON 格式。请只输出需要输出的结果，不要添加其他解释性语句。
+一阶逻辑公式的语法定义如下：
+1） 确定规则中涉及的所有谓词。
+2） 定义每个谓词的含义和参数。
+3） 根据规则的逻辑结构，使用一阶逻辑的连接词（如∧、∨、⊕、¬、→、↔等）和量词（如∀、∃等）构建逻辑表达式。
+------
+下面是一个例子：
+规则：
+安全生产协调司的职责：根据安全监管总局领导指示和有关规定，组织协调安全监察专员赶赴事故现场参与事故应急救援和事故调查处理工作。
+###
+输出：
+{
+    "predicates":
+    [
+        "指示：Instruction(Leader, Regulation) ::: 表示领导发出的指示和相关规定。",
+        "参与：Participate(Inspector, Scene, Task) ::: 表示安全监察专员在事故现场参与某项任务。",
+        "赶赴：GoTo(Inspector, Scene) ::: 表示安全监察专员赶赴事故现场。",
+        "事故：Accident(Scene) ::: 表示发生在某个场景的事故。"
+    ],
+    "logicexpression":
+    [
+        "∀s ∀i ∀r (Accident(s) ∧ Instruction(Leader, r) → (GoTo(i, s) ∧ Participate(i, s, EmergencyRescue) ∧ Participate(i, s, Investigation)))"
+    ]
+}
+------
+下面是一个例子：
+规则：
+善后处置的获救人员的处置：当地政府民政部门或获救人员所在单位负责获救人员的安置；港澳台或外籍人员，由当地政府港澳台办或外事办负责安置；外籍人员由公安部门或外交部门负责遣返。
+###
+输出：
+{
+    "predicates":
+    [
+        "负责安置：ResponsibleForSettlement(Department, Person) 表示某个部门负责某个获救人员的安置。",
+        "港澳台或外籍人员：PersonType(Person, Type) 表示某个人员是港澳台或外籍人员。",
+        "遣返：Deport(Person, Department) 表示某个部门负责遣返某个外籍人员。"
+    ],
+    "logicexpression":
+    [
+        "∀p (获救人员(p) → (¬港澳台或外籍人员(p) → ResponsibleForSettlement(民政部门, p) ∨ ResponsibleForSettlement(所在单位, p)))",
+        "∀p (港澳台或外籍人员(p, 港澳台) → ResponsibleForSettlement(港澳台办, p) ∨ ResponsibleForSettlement(外事办, p))",
+        "∀p (港澳台或外籍人员(p, 外籍) → Deport(p, 公安部门) ∨ Deport(p, 外交部门))"
+    ]
+}
+------
+下面就是你需要翻译的：
+规则：
+[[RULES]]
+###
